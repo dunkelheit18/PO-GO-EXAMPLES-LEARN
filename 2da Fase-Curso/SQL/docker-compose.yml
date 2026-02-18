@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0 
+    container_name: mysql_8_container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: master
+      MYSQL_DATABASE: DB_GO_CURSO
+      MYSQL_USER: dunk
+      MYSQL_PASSWORD: appDunk
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
