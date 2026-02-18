@@ -1,0 +1,28 @@
+*.exe
+*.exe_with_debug
+*.bin
+*.out
+/bin/
+/dist/
+vendor/
+
+*.test
+*.prof
+coverage.txt
+coverage.out
+
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+
+# Visual Studio Code
+.vscode/
+!.vscode/extensions.json
+*.code-workspace
+
+# GoLand / IntelliJ
+.idea/
