@@ -26,3 +26,6 @@ Icon
 
 # GoLand / IntelliJ
 .idea/
+
+# VARIABLES DE ENTORNO
+.env*
