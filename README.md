@@ -17,3 +17,4 @@ Para poder usar este proyecto, es necesario una BD, se recomienda usar docker:
 cd ~/2da Fase-Curso/SQL
 
 docker-compose up -d 
+
