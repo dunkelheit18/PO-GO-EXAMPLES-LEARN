@@ -1,0 +1,46 @@
+{{ template "header" }}
+
+    <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
+        <div class="text-bg-dark me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+
+            <h1>Registro</h1>
+            <div class="row">
+                <h3> Ingresa lo siguientes datos</h3>
+                <form action="/Registro" method="POST">
+                    <div class="form-group">
+                        <table class="align-middle">
+                            <tbody>
+                                <tr>
+                                    <th scope="col">
+                                        <label for="nombre">Nombre:</label>
+                                    </th>
+                                    <th>
+                                        <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre"/>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th scope="col">
+                                         <label for="email">E-mail:</label>
+                                    </th>
+                                    <th>
+                                        <input type="text" class="form-control" name="email" id="email" placeholder="Correo"/>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th scope="col">
+                                        <label for="password">Contraseña:</label>
+                                    </th>
+                                    <th>
+                                         <input type="password" class="form-control" name="password" id="password" placeholder="Contraseña"/>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <input type="submit" value="Enviar" title="Enviar" class="btn btn-primary"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{{ template "footer"  }}
