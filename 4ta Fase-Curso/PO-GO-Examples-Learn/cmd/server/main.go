@@ -26,6 +26,11 @@ func StaticFilesMuxServer() {
 	muxS.HandleFunc("/", Services.LoadTemplate)
 	muxS.HandleFunc("/Formularios", Services.LoadRegistrotemplate)
 	muxS.HandleFunc("/Registro", Services.Regitro).Methods("POST")
+	muxS.HandleFunc("/Upload", Services.LoadTemplateUpload)
+	muxS.HandleFunc("/Upload-file", Services.Uploadfiles).Methods("POST")
+	muxS.HandleFunc("/Resources", Services.LoadTemplateResources)
+	muxS.HandleFunc("/Resources/Generate-pdf", Services.GeneratePDF)
+	muxS.HandleFunc("/Resources/Generate-excel", Services.GenerateExcel)
 
 	//CONFIGURACIÓN PARA QUE MUX PUEDA CARGAR LOS ARCHIVOS PUBLICOS
 	handlerPrefix := http.StripPrefix("/ui/", http.FileServer(http.Dir("./ui/")))

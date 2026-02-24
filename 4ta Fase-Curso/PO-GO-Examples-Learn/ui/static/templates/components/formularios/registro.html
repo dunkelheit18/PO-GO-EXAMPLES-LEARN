@@ -5,6 +5,12 @@
 
             <h1>Registro</h1>
             <div class="row">
+                {{ if ne .css "" }}
+                    <div class="alert alert-{{.css}} alert-dismissible fade show">
+                        {{.mensaje}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {{ end }}
                 <h3> Ingresa lo siguientes datos</h3>
                 <form action="/Registro" method="POST">
                     <div class="form-group">

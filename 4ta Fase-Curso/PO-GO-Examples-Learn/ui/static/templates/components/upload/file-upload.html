@@ -1,0 +1,36 @@
+{{ template "header" }}
+
+    <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
+        <div class="text-bg-dark me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+
+            <h1>Upload</h1>
+            <div class="row">
+                {{ if ne .css "" }}
+                    <div class="alert alert-{{.css}} alert-dismissible fade show">
+                        {{.mensaje}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {{ end }}
+                <h3> Carga de ficheros: </h3>
+                <form action="/Upload-file" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <table class="align-middle">
+                            <tbody>
+                                <tr>
+                                    <th scope="col">
+                                        <label for="nombre">Image: </label>
+                                    </th>
+                                    <th>
+                                        <input type="file" class="form-control" name="image" id="image"/>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <input type="submit" value="Enviar" title="Enviar" class="btn btn-primary"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{{ template "footer"  }}

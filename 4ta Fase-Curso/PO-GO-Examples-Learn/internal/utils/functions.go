@@ -8,8 +8,27 @@ import (
 
 var Store = sessions.NewCookieStore([]byte("session-name"))
 
-func CallMessage(response http.ResponseWriter, request *http.Request) {
+func CallMessage(response http.ResponseWriter, request *http.Request) (string, string) {
 
+	cssSession := ""
+	mensajeSession := ""
+	session, _ := Store.Get(request, "flash-session")
+
+	fmCss := session.Flashes("css")
+	session.Save(request, response)
+
+	if len(fmCss) > 0 {
+		cssSession = fmCss[0].(string)
+	}
+
+	fmMensaje := session.Flashes("mensaje")
+	session.Save(request, response)
+
+	if len(fmMensaje) > 0 {
+		mensajeSession = fmMensaje[0].(string)
+	}
+
+	return cssSession, mensajeSession
 }
 
 func CreateMessage(response http.ResponseWriter, request *http.Request, css string, mensaje string) {
