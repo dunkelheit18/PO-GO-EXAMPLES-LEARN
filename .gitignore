@@ -5,6 +5,7 @@
 /bin/
 /dist/
 vendor/
+/SQL/mysql_data/
 
 *.test
 *.prof
