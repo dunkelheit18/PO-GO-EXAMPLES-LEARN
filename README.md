@@ -11,10 +11,10 @@ Proyectos de ejemplo para estudiar/practicar Golang.
 
 Para poder usar este proyecto, es necesario una BD, se recomienda usar docker:
 
-* En la ruta '2da Fase-Curso/SQL/docker-compose.yml' se encuentra un compose con la sugerencia:
+* En la ruta '/SQL/BD/docker-compose.yml' se encuentra un compose con la sugerencia:
 
 ```bash
-cd ~/2da Fase-Curso/SQL
+cd ~/SQL/BD
 
 docker-compose up -d 
 
