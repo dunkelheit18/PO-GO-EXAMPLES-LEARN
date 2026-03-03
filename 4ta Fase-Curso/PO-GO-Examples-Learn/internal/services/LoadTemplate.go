@@ -1,6 +1,8 @@
 package services
 
 import (
+	Modelos "PO-GO-Examples-Learn/internal/models"
+	Repository "PO-GO-Examples-Learn/internal/repository"
 	RegistroVal "PO-GO-Examples-Learn/internal/services/registro"
 	Rutas "PO-GO-Examples-Learn/internal/utils"
 	"fmt"
@@ -8,13 +10,25 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"text/template"
 	"time"
 
+	"github.com/gorilla/mux"
 	"github.com/jung-kurt/gofpdf"
 	excelize "github.com/xuri/excelize/v2"
 )
+
+type ServiceClients struct {
+	Repository *Repository.UserRepository
+}
+
+func NewServiceClients(repo *Repository.UserRepository) *ServiceClients {
+	return &ServiceClients{
+		Repository: repo,
+	}
+}
 
 func LoadTemplate(response http.ResponseWriter, request *http.Request) {
 
@@ -191,4 +205,187 @@ func GenerateExcel(response http.ResponseWriter, request *http.Request) {
 
 	Rutas.CreateMessage(response, request, css, msg)
 	http.Redirect(response, request, "/Resources", http.StatusSeeOther)
+}
+
+func LoadTemplateClientes(response http.ResponseWriter, request *http.Request) {
+
+	html, error := template.ParseFiles(Rutas.CLIENTES_PATH, Rutas.TEMPLATE_PATH)
+
+	if error != nil {
+		log.Fatal("Error al cargar la plantilla HTML ... ", error)
+	}
+
+	css, msg := Rutas.CallMessage(response, request)
+
+	data := map[string]string{
+		"Css":     css,
+		"Mensaje": msg,
+	}
+
+	html.Execute(response, data)
+}
+
+func (service *ServiceClients) ListClients(response http.ResponseWriter, request *http.Request) {
+
+	msg := ""
+	css := ""
+
+	html, error := template.ParseFiles(Rutas.CLIENTES_PATH, Rutas.TEMPLATE_PATH)
+
+	if error != nil {
+		log.Fatal("Error al cargar la plantilla HTML ... ", error)
+	}
+
+	clients := service.Repository.GetAllClientes()
+
+	if clients != nil {
+		msg = "¡Búsqueda exitosa!"
+		css = "success"
+	} else {
+		msg = "No se encontraron clientes"
+		css = "danger"
+	}
+
+	Rutas.CreateMessage(response, request, css, msg)
+
+	html.Execute(response,
+		Modelos.ClientesResponse{
+			Css:     css,
+			Mensaje: msg,
+			Data:    clients,
+		},
+	)
+}
+
+func LoadTemplateNewClient(response http.ResponseWriter, request *http.Request) {
+
+	html, error := template.ParseFiles(Rutas.CLIENTES_REGISTRO_PATH, Rutas.TEMPLATE_PATH)
+
+	if error != nil {
+		log.Fatal("Error al cargar la plantilla HTML ... ", error)
+	}
+
+	css, msg := Rutas.CallMessage(response, request)
+
+	data := map[string]string{
+		"Css":     css,
+		"Mensaje": msg,
+	}
+
+	html.Execute(response, data)
+}
+
+func (service *ServiceClients) RegistreClient(response http.ResponseWriter, request *http.Request) {
+
+	css := ""
+
+	html, error := template.ParseFiles(Rutas.CLIENTES_REGISTRO_PATH, Rutas.TEMPLATE_PATH)
+
+	if error != nil {
+		log.Fatal("Error al cargar la plantilla HTML ... ", error)
+	}
+
+	nombre := request.FormValue("nombre")
+	correo := request.FormValue("email")
+	telefono := request.FormValue("telefono")
+
+	bandera, mensaje := service.Repository.SaveOrUpdate(
+		Modelos.Cliente{
+			Nombre:   nombre,
+			Correo:   correo,
+			Telefono: telefono,
+		},
+	)
+
+	if bandera {
+		css = "success"
+	} else {
+		css = "danger"
+	}
+
+	Rutas.CreateMessage(response, request, css, mensaje)
+
+	data := map[string]string{
+		"Css":     css,
+		"Mensaje": mensaje,
+	}
+
+	html.Execute(response, data)
+}
+
+func (service *ServiceClients) LoadTemplateUpdateClient(response http.ResponseWriter, request *http.Request) {
+
+	css := ""
+	msg := ""
+
+	html, error := template.ParseFiles(Rutas.CLIENTES_ACTUALIZAR_PATH, Rutas.TEMPLATE_PATH)
+
+	if error != nil {
+		log.Fatal("Error al cargar la plantilla HTML ... ", error)
+	}
+
+	vars := mux.Vars(request)
+	idCliente, _ := strconv.Atoi(vars["id"])
+
+	banCliente, datosCliente := service.Repository.FindById(idCliente)
+
+	if banCliente {
+		css = "success"
+		msg = "Se consulto el cliente correctamente."
+	} else {
+		css = "danger"
+		msg = "El cliente no fue encontrado"
+	}
+
+	Rutas.CreateMessage(response, request, css, msg)
+
+	html.Execute(response,
+		Modelos.ClienteResponse{
+			Css:     css,
+			Mensaje: msg,
+			Data:    datosCliente,
+		},
+	)
+}
+
+func (service *ServiceClients) UpdateClient(response http.ResponseWriter, request *http.Request) {
+
+	css := ""
+
+	html, error := template.ParseFiles(Rutas.CLIENTES_ACTUALIZAR_PATH, Rutas.TEMPLATE_PATH)
+
+	if error != nil {
+		log.Fatal("Error al cargar la plantilla HTML ... ", error)
+	}
+
+	nombre := request.FormValue("nombre")
+	correo := request.FormValue("email")
+	telefono := request.FormValue("telefono")
+
+	bandera, mensaje := service.Repository.SaveOrUpdate(
+		Modelos.Cliente{
+			Nombre:   nombre,
+			Correo:   correo,
+			Telefono: telefono,
+		},
+	)
+
+	if bandera {
+		css = "success"
+	} else {
+		css = "danger"
+	}
+
+	Rutas.CreateMessage(response, request, css, mensaje)
+
+	html.Execute(response, Modelos.ClienteResponse{
+		Css:     css,
+		Mensaje: mensaje,
+		Data: Modelos.Cliente{
+			Nombre:   nombre,
+			Correo:   correo,
+			Telefono: telefono,
+		},
+	},
+	)
 }

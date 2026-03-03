@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Golang HTML Example</title>
+</head>
+<body>
+    <div>
+        <h1> ESTRUCTURAS </h1>
+        <div>
+            <h4> Declaración de variables</h4>
+            {{with $miVariable := "Esto esta alamcenado en una variable" }}
+                <p>{{$miVariable}}</p>
+            {{end}}
+        </div>
+        <div>
+            <h4> Valores desde un struct</h4>
+            <ul>
+                <li>Nombre: {{.Nombre}}</li>
+                <li>Edad: {{.Edad}} años</li>
+                <li>Genero: {{.Genero}}</li>
+            </ul>
+        </div>
+        <div>
+            <h4> Iteraciones </h4>
+        </div>
+        <ul>
+            {{  range .Skills }}
+            <li> {{.Nombre}} </li>
+            {{ end }}
+        </ul>
+    </div>
+</body>
+</html>

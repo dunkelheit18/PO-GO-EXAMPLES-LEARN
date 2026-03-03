@@ -1,0 +1,76 @@
+{{ template "header" }}
+
+    <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
+        <div class="text-bg-dark me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+
+            <h1>Clientes</h1>
+            <div class="row">
+                {{ if ne .Css "" }}
+                    <div class="alert alert-{{.Css}} alert-dismissible fade show">
+                        {{.Mensaje}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {{ end }}
+                <table>
+                    <tbody>
+                        <tr>
+                            <th scope="col">&nbsp;</th>
+                        </tr>
+                        <tr>
+                            <th scope="col">
+                                <a href="/Get-clientes" class="btn btn-danger">&nbsp; Consultar &nbsp;</a>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th scope="col">
+                                <a href="/Save-clientes" class="btn btn-danger">Crear nuevo</a>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <br>
+            <div class="row">
+                <table class="table table-striped caption-top">
+                    <caption>Resultado de la busqueda: </caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                <label>Id</label>
+                            </th>
+                            <th scope="col">
+                                <label>Nombre</label>
+                            </th>
+                            <th scope="col">
+                                <label>Correo</label>
+                            </th>
+                            <th scope="col">
+                                <label>Telefono</label>
+                            </th>
+                            <th scope="col">
+                                <label>Actions</label>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{range .Data }}
+                            <tr>
+                                <td>{{.Id}}</td>
+                                <td>{{.Nombre}}</td>
+                                <td>{{.Correo}}</td>
+                                <td>{{.Telefono}}</td>
+                                <td>
+                                    <a href="/Actualizar-clientes/{{.Id}}">
+                                        <img  class="bi" src="/ui/static/bootstrap/icons/pencil-square.svg" alt="SVG"/>
+                                    </a>
+                                </td>
+                            </tr>
+                        {{ end }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{{ template "footer"  }}

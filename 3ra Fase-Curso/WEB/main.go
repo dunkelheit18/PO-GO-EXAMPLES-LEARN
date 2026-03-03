@@ -20,7 +20,10 @@ func main() {
 	//ServerTest()
 
 	// Servidor usando Gorilla Mux
-	GorillaMuxServer()
+	//GorillaMuxServer()
+
+	// Carga de archivos estaticos en Gorilla Mux
+	StaticFilesMuxServer()
 }
 
 func ServerTest() {
@@ -32,15 +35,29 @@ func ServerTest() {
 	log.Fatal(http.ListenAndServe("localhost:8081", nil))
 }
 
+func StaticFilesMuxServer() {
+	EnvGet()
+	muxS = mux.NewRouter()
+	defer ServerConfig()
+
+	muxS.HandleFunc("/", Endpints.LoadTemplate)
+
+	//CONFIGURACIÓN PARA QUE MUX PUEDA CARGAR LOS ARCHIVOS PUBLICOS
+	handlerPrefix := http.StripPrefix("/assets/templates/staticfiles/", http.FileServer(http.Dir("./assets/templates/staticfiles/")))
+	muxS.PathPrefix("/assets/templates/staticfiles/").Handler(handlerPrefix)
+}
+
 func GorillaMuxServer() {
 	EnvGet()
 	muxS = mux.NewRouter()
-	muxS.HandleFunc("/", Endpints.Home)
+	muxS.HandleFunc("/", Endpints.Init)
+	muxS.HandleFunc("/home", Endpints.Home)
 	muxS.HandleFunc("/version", Endpints.ServiceVersion)
 	//URL con Parametros en el PATH
 	muxS.HandleFunc("/saludo/{name:.*}/{apellido:.*}", Endpints.Saludo)
 	// Ejemplo: http://localhost:8080/despedida?name=Benito&apellido=Juarez
 	muxS.HandleFunc("/despedida", Endpints.Despedida)
+	muxS.HandleFunc("/estructuras/variables", Endpints.Estructuras)
 
 	ServerConfig()
 }

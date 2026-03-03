@@ -85,3 +85,23 @@ func ValidaDatos(data map[string]string) (bool, string) {
 
 	return (msg != ""), msg
 }
+
+func ValidaDatosCliente(data map[string]string) (bool, string) {
+
+	msg := ""
+	name := data["nombre"]
+	email := data["email"]
+
+	errName, msgName := ValidaNombre(name)
+	errEmail, msgEmail := ValidaEmail(email)
+
+	if errName {
+		msg = msgName
+	}
+
+	if errEmail {
+		msg = msg + " | " + msgEmail
+	}
+
+	return (msg != ""), msg
+}

@@ -1,6 +1,8 @@
 package main
 
 import (
+	Configuratios "PO-GO-Examples-Learn/internal/config"
+	Repository "PO-GO-Examples-Learn/internal/repository"
 	Services "PO-GO-Examples-Learn/internal/services"
 	"log"
 	"net/http"
@@ -12,8 +14,15 @@ import (
 )
 
 var muxS *mux.Router
+var clientService *Services.ServiceClients
 
 func main() {
+	dbConfig, _ := Configuratios.LoadDBConfig()
+	dbConnection := Configuratios.GetInstance(dbConfig)
+	defer dbConnection.Close()
+
+	userRepo := Repository.NewUserRepository(dbConnection)
+	clientService = Services.NewServiceClients(userRepo)
 
 	StaticFilesMuxServer()
 }
@@ -31,6 +40,12 @@ func StaticFilesMuxServer() {
 	muxS.HandleFunc("/Resources", Services.LoadTemplateResources)
 	muxS.HandleFunc("/Resources/Generate-pdf", Services.GeneratePDF)
 	muxS.HandleFunc("/Resources/Generate-excel", Services.GenerateExcel)
+	muxS.HandleFunc("/Clientes", Services.LoadTemplateClientes)
+	muxS.HandleFunc("/Get-clientes", clientService.ListClients)
+	muxS.HandleFunc("/Save-clientes", Services.LoadTemplateNewClient)
+	muxS.HandleFunc("/Registrar-clientes", clientService.RegistreClient).Methods("POST")
+	muxS.HandleFunc("/Actualizar-clientes/{id:.*}", clientService.LoadTemplateUpdateClient)
+	muxS.HandleFunc("/Update-cliente", clientService.UpdateClient).Methods("POST")
 
 	//CONFIGURACIÓN PARA QUE MUX PUEDA CARGAR LOS ARCHIVOS PUBLICOS
 	handlerPrefix := http.StripPrefix("/ui/", http.FileServer(http.Dir("./ui/")))

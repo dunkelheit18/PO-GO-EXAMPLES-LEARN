@@ -1,0 +1,70 @@
+{{ template "header" }}
+
+    <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
+        <div class="text-bg-dark me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+
+            <h1>Clientes</h1>
+            <div class="row">
+                {{ if ne .Css "" }}
+                    <div class="alert alert-{{.Css}} alert-dismissible fade show">
+                        {{.Mensaje}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {{ end }}
+                <table>
+                    <tbody>
+                        <tr>
+                            <th scope="col">&nbsp;</th>
+                        </tr>
+                        <tr>
+                            <th scope="col">
+                                <a href="/Clientes" class="btn btn-danger">&nbsp; Consultar &nbsp;</a>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <br>
+            <h3>Actualizar cliente: </h3>
+            <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
+                <div class="text-bg-dark me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center"></div>
+                    <form action="/Update-cliente" method="POST">
+                        <div class="form-group">
+                            <table class="align-middle">
+                                <tbody>
+                                    <tr>
+                                        <th scope="col">
+                                            <label for="nombre">Nombre:</label>
+                                        </th>
+                                        <th>
+                                            <input type="text" class="form-control" name="nombre" id="nombre" value="{{.Data.Nombre}}"/>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">
+                                            <label for="email">E-mail:</label>
+                                        </th>
+                                        <th>
+                                            <input type="text" class="form-control" name="email" id="email" value="{{.Data.Correo}}"/>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">
+                                            <label for="telefono">Telefono:</label>
+                                        </th>
+                                        <th>
+                                            <input type="text" class="form-control" name="telefono" id="telefono" value="{{.Data.Telefono}}"/>
+                                        </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <input type="submit" value="Enviar" title="Enviar" class="btn btn-primary"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{{ template "footer"  }}
